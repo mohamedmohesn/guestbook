@@ -1,0 +1,19 @@
+{
+  "name": "guestbook_backend",
+  "version": "1.0.0",
+  "description": "app where guest can add messages in guestbook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohamedmohesn/guestbook.git"
+  },
+  "author": "mohamed mohesn mohamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohamedmohesn/guestbook/issues"
+  },
+  "homepage": "https://github.com/mohamedmohesn/guestbook#readme"
+}
