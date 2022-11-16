@@ -35,9 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var userModel_1 = require("../models/userModel");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var book = new userModel_1.Guestbook();
+var maxAge = 6 * 24 * 60 * 60;
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var People, error_1;
     return __generator(this, function (_a) {
@@ -58,8 +63,28 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var People, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, book.show(req.params.id)];
+            case 1:
+                People = _a.sent();
+                res.json(People);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(400);
+                res.json("Could not find People");
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var guest, People, err_1;
+    var guest, People, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -73,40 +98,35 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [4 /*yield*/, book.create(guest)];
             case 1:
                 People = _a.sent();
-                res.json(People);
+                token = jsonwebtoken_1["default"].sign({ user: People }, 'hi');
+                console.log(People);
+                res.json({ People: People, token: token });
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
                 res.status(400);
-                res.json("Could not add new Product");
+                res.json("Could not add new Guest");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, password, loginUser, err_2;
+    var email, password, loginUser, token, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 email = req.body.email;
                 password = req.body.password;
-                return [4 /*yield*/, book.authenticate(email, password)
-                    // if (newProduct !== null) {
-                    // const token = jwt.sign({user: newProduct}, process.env.TOKEN as string);
-                    // res.setHeader('authorization', 'Bearer '+token)  
-                    // }
-                    // console.log(newProduct)
-                ];
+                return [4 /*yield*/, book.authenticate(email, password)];
             case 1:
                 loginUser = _a.sent();
-                // if (newProduct !== null) {
-                // const token = jwt.sign({user: newProduct}, process.env.TOKEN as string);
-                // res.setHeader('authorization', 'Bearer '+token)  
-                // }
-                // console.log(newProduct)
-                res.json(loginUser);
+                if (loginUser !== "Could not find use") {
+                    token = jsonwebtoken_1["default"].sign({ user: loginUser }, 'hi');
+                    res.json({ loginUser: loginUser, token: token });
+                }
+                res.json("Could not login guest");
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
@@ -119,6 +139,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
 }); };
 var GuestRoutes = function (app) {
     app.get('/user', index);
+    app.get('/user/:id', show);
     app.post('/signup', create);
     app.post('/login', authenticate);
 };

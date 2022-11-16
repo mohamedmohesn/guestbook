@@ -47,12 +47,12 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [4 /*yield*/, book.index()];
             case 1:
                 message = _a.sent();
-                res.json(message);
+                res.json([message]);
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
                 res.status(400);
-                res.json("Could not find messages");
+                res.json(["Could not find messages"]);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -83,8 +83,28 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var message, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, book.show(req.params.id)];
+            case 1:
+                message = _a.sent();
+                res.json([message]);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(400);
+                res.json("Could not find People");
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted, error_2;
+    var deleted, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -95,7 +115,7 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 res.json(deleted);
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
+                error_3 = _a.sent();
                 res.status(400);
                 res.json("Could not delete Message ".concat(req.params.id));
                 return [3 /*break*/, 3];
@@ -119,7 +139,7 @@ var updates = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
             case 2:
                 err_2 = _a.sent();
                 res.status(400);
-                res.json("Could not add new Message con ".concat(err_2));
+                res.json("Could not edit Message ");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -127,6 +147,7 @@ var updates = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
 }); };
 var MessageRoutes = function (app) {
     app.get('/message', index);
+    app.get('/message/:id', show);
     app.post('/message', create);
     app["delete"]('/message/:id', destroy);
     app.put('/message/edit/:id', updates);

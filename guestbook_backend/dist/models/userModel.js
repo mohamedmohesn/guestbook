@@ -78,14 +78,44 @@ var Guestbook = /** @class */ (function () {
             });
         });
     };
-    Guestbook.prototype.create = function (guest) {
+    Guestbook.prototype.show = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, conn, hash, result, users, err_1;
+            var sql, conn, result, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'INSERT INTO guests (email, fullname, phone ,password) VALUES($1, $2, $3 ,$4) RETURNING email,fullname,phone';
+                        sql = 'SELECT id,email,fullname,phone FROM guests WHERE id=($1) ';
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        if (!result.rows[0]) {
+                            return [2 /*return*/, "Could not find user ".concat(id)];
+                        }
+                        else {
+                            return [2 /*return*/, result.rows[0]];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("Could not find user ".concat(id, ". Error: ").concat(err_1));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Guestbook.prototype.create = function (guest) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, hash, result, users, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'INSERT INTO guests (email, fullname, phone ,password) VALUES($1, $2, $3 ,$4) RETURNING id,email,fullname,phone';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
@@ -98,8 +128,8 @@ var Guestbook = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, users];
                     case 3:
-                        err_1 = _a.sent();
-                        throw new Error("Could not add new user ".concat(guest.fullname, ". Error: ").concat(err_1));
+                        err_2 = _a.sent();
+                        throw new Error("Could not add new user ".concat(guest.fullname, ". Error: ").concat(err_2));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -107,33 +137,39 @@ var Guestbook = /** @class */ (function () {
     };
     Guestbook.prototype.authenticate = function (email, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, guest, guests;
+            var conn, sql, result, guest, guests, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT * FROM guests WHERE email=($1)';
-                        return [4 /*yield*/, conn.query(sql, [email])
-                            // console.log(password+pepper)
-                        ];
+                        return [4 /*yield*/, conn.query(sql, [email])];
                     case 2:
                         result = _a.sent();
-                        // console.log(password+pepper)
-                        if (result.rows.length) {
-                            guest = result.rows[0];
-                            // console.log(guest)
-                            if (bcrypt_1["default"].compareSync(password + pepper, guest.password)) {
-                                guests = {
-                                    id: guest.id,
-                                    email: guest.email,
-                                    fullname: guest.fullname,
-                                    phone: guest.phone
-                                };
-                                return [2 /*return*/, guests];
-                            }
+                        conn.release();
+                        console.log(result.rows.length);
+                        if (!result.rows[0]) {
+                            return [2 /*return*/, "Could not find use"];
                         }
-                        return [2 /*return*/, null];
+                        guest = result.rows[0];
+                        console.log(result);
+                        if (bcrypt_1["default"].compareSync(password + pepper, guest.password)) {
+                            guests = {
+                                id: guest.id,
+                                email: guest.email,
+                                fullname: guest.fullname,
+                                phone: guest.phone
+                            };
+                            return [2 /*return*/, guests];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_2 = _a.sent();
+                        throw new Error("Could not login new user ".concat(email));
+                    case 4: return [2 /*return*/];
                 }
             });
         });

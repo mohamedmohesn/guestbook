@@ -26,7 +26,29 @@ export class Messagebook {
         throw new Error(`Could not get Message. Error: ${err}`)
       }
     }
+    async show(id: string): Promise<string | Message[]> {
+        try {
+    
+            
+          const sql = 'SELECT * FROM messages WHERE guests_id=($1) '
+          const conn = await client.connect()
+    
+          const result = await conn.query(sql, [id])
+    
+          conn.release()
+    
+          if (!result.rows[0]) {
+            return `Could not find Message ${id}`
+          } else {
+            return result.rows
+          }
+    
+        } catch (err) {
+          throw new Error(`Could not find user ${id}. Error: ${err}`)
+        }
+    
 
+      }
     async create(message: Message): Promise<string|Message> {
         try {
             try {

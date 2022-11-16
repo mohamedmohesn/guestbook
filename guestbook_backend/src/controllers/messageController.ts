@@ -6,10 +6,10 @@ const book = new Messagebook()
 const index = async (_req: Request, res: Response) => {
     try {
         const message = await book.index()
-        res.json(message)
+        res.json([message])
     } catch (error) {
         res.status(400)
-        res.json(`Could not find messages`)
+        res.json([`Could not find messages`])
     }
 }
 
@@ -29,6 +29,17 @@ const create = async (req: Request, res: Response) => {
         res.json(`Could not add new Message`)
     }
 }
+
+const show = async (req: Request, res: Response) => {
+    try {
+      const message = await book.show(req.params.id)
+     res.json([message])  
+    } catch (error) {
+        res.status(400)
+        res.json(`Could not find People`)
+    } 
+    
+  }
 
 
 const destroy = async (req: Request, res: Response) => {
@@ -50,13 +61,14 @@ const updates = async (req: Request, res: Response) => {
         res.json(newMessage)
     } catch (err) {
         res.status(400)
-        res.json(`Could not add new Message con ${err}`)
+        res.json(`Could not edit Message `)
     }
 }
 
 
 const MessageRoutes = (app: express.Application) => {
     app.get('/message', index)
+    app.get('/message/:id', show)
     app.post('/message', create)
     app.delete('/message/:id', destroy)
     app.put('/message/edit/:id', updates)

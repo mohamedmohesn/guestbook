@@ -74,9 +74,39 @@ var Messagebook = /** @class */ (function () {
             });
         });
     };
+    Messagebook.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var sql, conn, result, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        sql = 'SELECT * FROM messages WHERE guests_id=($1) ';
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        if (!result.rows[0]) {
+                            return [2 /*return*/, "Could not find Message ".concat(id)];
+                        }
+                        else {
+                            return [2 /*return*/, result.rows];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_2 = _a.sent();
+                        throw new Error("Could not find user ".concat(id, ". Error: ").concat(err_2));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Messagebook.prototype.create = function (message) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql2, conn_1, result2, error_1, sql, conn, result, messages, err_2;
+            var sql2, conn_1, result2, error_1, sql, conn, result, messages, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -112,8 +142,8 @@ var Messagebook = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, messages];
                     case 8:
-                        err_2 = _a.sent();
-                        throw new Error("Could not add new message ".concat(message.id, ". Error: ").concat(err_2));
+                        err_3 = _a.sent();
+                        throw new Error("Could not add new message ".concat(message.id, ". Error: ").concat(err_3));
                     case 9: return [2 /*return*/];
                 }
             });
@@ -121,7 +151,7 @@ var Messagebook = /** @class */ (function () {
     };
     Messagebook.prototype["delete"] = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, conn, result, messages, err_3;
+            var sql, conn, result, messages, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -143,8 +173,8 @@ var Messagebook = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Could not delete messages ".concat(id, ". Error: ").concat(err_3));
+                        err_4 = _a.sent();
+                        throw new Error("Could not delete messages ".concat(id, ". Error: ").concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -152,7 +182,7 @@ var Messagebook = /** @class */ (function () {
     };
     Messagebook.prototype.edit = function (id, text) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, conn, result, messages, err_4;
+            var sql, conn, result, messages, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -174,8 +204,8 @@ var Messagebook = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        err_4 = _a.sent();
-                        throw new Error("Could not edit messages ".concat(id, ". Error: ").concat(err_4));
+                        err_5 = _a.sent();
+                        throw new Error("Could not edit messages ".concat(id, ". Error: ").concat(err_5));
                     case 4: return [2 /*return*/];
                 }
             });
