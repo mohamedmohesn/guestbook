@@ -5,7 +5,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     try {
         const authorizationHeader = req.headers.authorization as string
         const token = authorizationHeader.split(' ')[1]
-        const decoded = jwt.verify(token, 'hi' as string)
+        const decoded = jwt.verify(token, process.env.TOKEN as string)
         console.log(decoded)
         next()
     } catch(err) {

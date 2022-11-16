@@ -1,12 +1,13 @@
 import { Pool } from 'pg'
-
+import * as dotenv from 'dotenv'
+dotenv.config()
 let client = new Pool;
-// const {
- const POSTGRES_HOST = 'localhost';
- const POSTGRES_DB='guestbook';
- const POSTGRES_USER='postgres';
- const POSTGRES_PASSWORD='123456789';
-// } = process.env
+const {
+  POSTGRES_HOST,
+  POSTGRES_DB,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD
+} = process.env
 
 client = new Pool({
     host: POSTGRES_HOST,

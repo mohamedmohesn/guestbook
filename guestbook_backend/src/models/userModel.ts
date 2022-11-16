@@ -8,10 +8,10 @@ export type Guest = {
   fullname: string;
   phone: string;
   password?: string;
-}
+} 
 
-const pepper = 'meme';
-const saltRounds = 10;
+const pepper = process.env.PEPPER 
+const saltRounds = process.env.SALT
 
 export class Guestbook {
   async index(): Promise<string | Guest[]> {
@@ -80,7 +80,7 @@ export class Guestbook {
   }
 
 
-  async authenticate(email: string, password: string): Promise<string | Guest | undefined> {
+  async authenticate(email: string, password: string): Promise<Guest | string > {
 
     try {
       const conn = await client.connect()
@@ -89,32 +89,32 @@ export class Guestbook {
 
       const result = await conn.query(sql, [email])
       conn.release()
-      console.log(result.rows.length )
+      // console.log(result.rows.length )
 
       if (!result.rows[0]) {
-        return `Could not find use`
+        throw new Error (`Could not find use`)
       }
 
       const guest = result.rows[0]
 
-        console.log(result)
+        // console.log(result)
 
-        if (bcrypt.compareSync(password + pepper, guest.password)) {
-          const guests = {
-            id: guest.id,
-            email: guest.email,
-            fullname: guest.fullname,
-            phone: guest.phone,
-
-          }
-          return guests
+        if (!bcrypt.compareSync(password + pepper, guest.password)) {
+          throw new Error (`wrong password`)
         }
+        const guests = {
+          id: guest.id,
+          email: guest.email,
+          fullname: guest.fullname, 
+          phone: guest.phone,
+
+        }
+        return guests
       
       
-     
 
     } catch (error) {
-      throw new Error(`Could not login new user ${email}`)
+      throw new Error(`${error}` )
     }
   }
 

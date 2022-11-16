@@ -42,8 +42,8 @@ exports.__esModule = true;
 exports.Guestbook = void 0;
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var pepper = 'meme';
-var saltRounds = 10;
+var pepper = process.env.PEPPER;
+var saltRounds = process.env.SALT;
 var Guestbook = /** @class */ (function () {
     function Guestbook() {
     }
@@ -150,25 +150,25 @@ var Guestbook = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        console.log(result.rows.length);
+                        // console.log(result.rows.length )
                         if (!result.rows[0]) {
-                            return [2 /*return*/, "Could not find use"];
+                            throw new Error("Could not find use");
                         }
                         guest = result.rows[0];
-                        console.log(result);
-                        if (bcrypt_1["default"].compareSync(password + pepper, guest.password)) {
-                            guests = {
-                                id: guest.id,
-                                email: guest.email,
-                                fullname: guest.fullname,
-                                phone: guest.phone
-                            };
-                            return [2 /*return*/, guests];
+                        // console.log(result)
+                        if (!bcrypt_1["default"].compareSync(password + pepper, guest.password)) {
+                            throw new Error("wrong password");
                         }
-                        return [3 /*break*/, 4];
+                        guests = {
+                            id: guest.id,
+                            email: guest.email,
+                            fullname: guest.fullname,
+                            phone: guest.phone
+                        };
+                        return [2 /*return*/, guests];
                     case 3:
                         error_2 = _a.sent();
-                        throw new Error("Could not login new user ".concat(email));
+                        throw new Error("".concat(error_2));
                     case 4: return [2 /*return*/];
                 }
             });

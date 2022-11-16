@@ -4,7 +4,7 @@ import axios from 'axios'
 export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPass] = useState('');
-
+    const [err, setErr] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,13 +14,13 @@ export const Login = (props) => {
         axios.post("http://localhost:4000/login", item)
             .then(function (response) {
                 // handle success
-                console.log(response.data);
                 localStorage.setItem("token","Bearer "+response.data.token)
                 window.location = "/Message";
             })
             .catch(function (error) {
                 // handle error
-                console.log(error);
+                console.log(error.response.data);
+                setErr(error.response.data)
             })
     }
 
@@ -34,7 +34,7 @@ export const Login = (props) => {
                 <label htmlFor="password">password</label>
                 <input value={password} onChange={(e) => setPass(e.target.value)} type="password" id="password" name="password" />
                 <button type="submit">Log In</button>
-                <p>{}</p>
+                <p>{err}</p>
 
             </form>
             </div>

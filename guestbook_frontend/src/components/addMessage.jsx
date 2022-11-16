@@ -10,14 +10,16 @@ export function Addmessage(props) {
         var decoded = jwtdecode(token);
         console.log(decoded.user.id);
         let item = { guests_id:decoded.user.id, messagetext }
-
-        axios.post("http://localhost:4000/message", item)
+        const headers = {
+            'authorization': token,
+          };
+        axios.post("http://localhost:4000/message", item,{headers})
             .then(function (response) {
                 // handle success
 
                 console.log(response);
                 window.location.reload();
-                alert(`you new message ${messagetext}`)
+                alert(response.data.mess)
             })
             .catch(function (error) {
                 // handle error

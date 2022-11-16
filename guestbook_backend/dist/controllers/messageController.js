@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var messageModel_1 = require("../models/messageModel");
+var middleware_1 = require("../middleware");
 var book = new messageModel_1.Messagebook();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var message, error_1;
@@ -72,7 +73,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 newMessage = _a.sent();
                 console.log(newMessage);
-                res.json(newMessage);
+                res.json({ newMessage: newMessage, mess: "add create new message is ".concat(messageContainer.messagetext) });
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -112,7 +113,7 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 return [4 /*yield*/, book["delete"](req.params.id)];
             case 1:
                 deleted = _a.sent();
-                res.json(deleted);
+                res.json({ deleted: deleted, mess: "message deleted" });
                 return [3 /*break*/, 3];
             case 2:
                 error_3 = _a.sent();
@@ -134,7 +135,7 @@ var updates = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
             case 1:
                 newMessage = _a.sent();
                 console.log(newMessage);
-                res.json(newMessage);
+                res.json({ newMessage: newMessage, mess: "editting message is ".concat(messagetext) });
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
@@ -147,9 +148,9 @@ var updates = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
 }); };
 var MessageRoutes = function (app) {
     app.get('/message', index);
-    app.get('/message/:id', show);
-    app.post('/message', create);
-    app["delete"]('/message/:id', destroy);
-    app.put('/message/edit/:id', updates);
+    app.get('/message/:id', middleware_1.verifyToken, show);
+    app.post('/message', middleware_1.verifyToken, create);
+    app["delete"]('/message/:id', middleware_1.verifyToken, destroy);
+    app.put('/message/edit/:id', middleware_1.verifyToken, updates);
 };
 exports["default"] = MessageRoutes;

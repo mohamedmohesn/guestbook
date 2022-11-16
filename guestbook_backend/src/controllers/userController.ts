@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express'
 import { Guestbook, Guest} from '../models/userModel'
 import jwt from "jsonwebtoken";
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const book = new Guestbook()
-const maxAge = 6 * 24 * 60 * 60;
+
 const index = async (_req: Request, res: Response) => {
     try {
 
@@ -38,7 +40,7 @@ const create = async (req: Request, res: Response) => {
         }
         // process.env.TOKEN as string
         const People = await book.create(guest)
-        const token = jwt.sign({user: People}, 'hi')
+        const token = jwt.sign({user: People}, process.env.TOKEN as string)
         console.log(People);
         res.json({People,token})
     } catch(err) {
@@ -55,16 +57,17 @@ const authenticate = async (req: Request, res: Response) => {
         
         const loginUser = await book.authenticate(email,password)
 
-        if (loginUser !== "Could not find use") {
-        const token = jwt.sign({user: loginUser}, 'hi');
+        if (loginUser !== "Error") {
+        const token = jwt.sign({user: loginUser},process.env.TOKEN as string);
+        
         res.json({loginUser,token})
         }
-        res.json(`Could not login guest`)
     } catch(err) {
         res.status(400)
-        res.json(`Could not login guest`)
+        res.json(`${err}`)
     }
 }
+
 
 const GuestRoutes = (app: express.Application) => {
     app.get('/user', index)
