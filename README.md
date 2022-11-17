@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # GuestBook Project
 
 ## Table of Contents
@@ -68,3 +69,6 @@ open psql
 `addMessage` for writting messages\
 `Logout` to Logout
 
+=======
+under construction
+>>>>>>> 4feb84740ca53389109696af572080a471c0825f
