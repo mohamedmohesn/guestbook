@@ -35,3 +35,8 @@ li a {
 li a:hover {
   background-color: rgb(49, 126, 75);
 }
+nav {
+  background-color: aqua;
+  padding: 0.5px;
+  margin: 1px;
+}
