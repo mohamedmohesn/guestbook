@@ -129,7 +129,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 2:
                 err_1 = _a.sent();
                 res.status(400);
-                res.json("Could not add new Guest");
+                res.json("".concat(err_1));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 export const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [err, setErr] = useState("");
-  
+
   const [formErrors, setFormErrors] = useState({});
 
   const validate = (values) => {
@@ -24,9 +23,9 @@ export const Login = (props) => {
       errors.password = "Password must be more than 4 characters";
     }
     return errors;
-  }
+  };
 
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +40,7 @@ export const Login = (props) => {
       .then(function (response) {
         // handle success
         localStorage.setItem("token", "Bearer " + response.data.token);
-        navigate('/Message');
+        navigate("/Message");
         // window.location = "/Message";
       })
       .catch(function (error) {
@@ -75,7 +74,10 @@ export const Login = (props) => {
           />
           <p>{formErrors.password}</p>
           <button type="submit">Log In</button>
-          <p>{err}</p>
+          <div className="alert">
+            <span></span>
+            <strong>{err}</strong>
+          </div>
         </form>
       </div>
     </div>

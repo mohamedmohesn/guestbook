@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import jwtdecode from "jwt-decode";
-import { Alert } from "reactstrap"
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function Addmessage(props) {
@@ -24,8 +23,9 @@ export function Addmessage(props) {
 
         console.log(response);
         // alert(response.data.mess);
-        setAlert(response.data.mess)
-        props.parentCallback('A')
+        setAlert(response.data.mess);
+        props.parentCallback("A");
+        // props.alart(alerts)
       })
       .catch(function (error) {
         // handle error
@@ -34,9 +34,10 @@ export function Addmessage(props) {
   };
   return (
     <div className="auth-form-container">
-     <Alert color="success">
-                {alerts}
-            </Alert>
+      <div className="alert success">
+        <span></span>
+        <strong>{alerts}</strong>
+      </div>
       <h2>add message</h2>
       <form className="message-form" onSubmit={handleSubmit}>
         <label htmlFor="write">write</label>

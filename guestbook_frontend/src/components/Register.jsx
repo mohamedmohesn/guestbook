@@ -1,7 +1,6 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 
 export const Register = (props) => {
   const [email, setEmail] = useState("");
@@ -10,9 +9,9 @@ export const Register = (props) => {
   const [fullname, setName] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [err, setErr] = useState("");
 
-  const navigate  = useNavigate();
-
+  const navigate = useNavigate();
 
   const validate = (values) => {
     const errors = {};
@@ -26,7 +25,7 @@ export const Register = (props) => {
 
     if (!values.phone) {
       errors.phone = "phone is required!";
-    }else if (values.phone.length < 9) {
+    } else if (values.phone.length < 9) {
       errors.phone = "phone must be more than 9 characters";
     } else if (values.phone.length > 15) {
       errors.phone = "phone cannot exceed more than 15 characters";
@@ -44,36 +43,34 @@ export const Register = (props) => {
       errors.password = "Password must be more than 4 characters";
     }
     return errors;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(email);
-    setFormErrors(validate({ email, fullname, phone, password  }));
+    setFormErrors(validate({ email, fullname, phone, password }));
     setIsSubmit(true);
   };
   useEffect(() => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-     
-    let item = { email, fullname, phone, password };
+      let item = { email, fullname, phone, password };
 
-    axios
-      .post("http://localhost:4000/signup", item)
-      .then(function (response) {
-        // handle success
-        console.log(response.headers);
-        console.log(response.data.token);
-        localStorage.setItem("token", "Bearer " + response.data.token);
-        // window.location = "/Message";
-        navigate('/Message');
-
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-
+      axios
+        .post("http://localhost:4000/signup", item)
+        .then(function (response) {
+          // handle success
+          console.log(response.headers);
+          console.log(response.data.token);
+          localStorage.setItem("token", "Bearer " + response.data.token);
+          // window.location = "/Message";
+          navigate("/Message");
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+          setErr(error.response.data);
+        });
     }
   }, [formErrors]);
   return (
@@ -89,7 +86,7 @@ export const Register = (props) => {
             id="email"
             name="email"
           />
-          <p>{formErrors.email}</p>          
+          <p>{formErrors.email}</p>
           <label htmlFor="name">Full name</label>
           <input
             value={fullname}
@@ -119,6 +116,10 @@ export const Register = (props) => {
           <p>{formErrors.password}</p>
           <button type="submit">Log In</button>
         </form>
+        <div className="alert">
+          <span></span>
+          <strong>{err}</strong>
+        </div>
       </div>
     </div>
   );

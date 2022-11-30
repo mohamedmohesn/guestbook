@@ -7,6 +7,7 @@ export function Message(props) {
   const [mess, setRequest] = useState([]);
   const [messagetext, setMess] = useState("");
   const [display, setDis] = useState("");
+  const [alerts, setAlerts] = useState("");
 
   const token = localStorage.getItem("token");
   var decoded = jwtdecode(token);
@@ -23,7 +24,7 @@ export function Message(props) {
         setRequest(response.data[0]);
         console.log(display);
         // console.log(mess , response.data);
-        setDis(0)
+        setDis(0);
       })
       .catch(() => {
         setRequest();
@@ -36,8 +37,8 @@ export function Message(props) {
       .delete(`http://localhost:4000/message/${id}`, { headers })
       .then((response) => {
         console.log(response.data.mess);
-        setDis('D' + id)
-        alert(response.data.mess);
+        setDis("D" + id);
+        setAlerts(response.data.mess);
         // window.location.reload();
       })
       .catch((err) => {
@@ -47,7 +48,6 @@ export function Message(props) {
   };
 
   const editMessage = async (id, e) => {
-
     e.preventDefault();
     let item = { messagetext };
     axios
@@ -55,8 +55,8 @@ export function Message(props) {
       .then((response) => {
         console.log(response.data);
         // window.location.reload();
-        alert(`${response.data.mess}`);
-        setDis('E' + id)
+        setAlerts(`${response.data.mess}`);
+        setDis("E" + id);
         console.log(display);
         // setRequest(response.data)
       })
@@ -66,44 +66,44 @@ export function Message(props) {
       });
   };
   const handleCallback = (childData) => {
-    setDis({ name: childData })
-  }
+    setDis({ name: childData });
+  };
   return (
     <div className="App">
+      <div className="alert info">
+        <span></span>
+        <strong>{alerts}</strong>
+      </div>
       <Addmessage parentCallback={handleCallback} />
       <div className="auth-form-container">
         <h2>Messages</h2>
 
         {Array.isArray(mess) ? (
           mess.map((user, index) => (
-
             <div key={index} className="auth-form-container">
-             
-                    <h2 className="del">{user.messagetext}</h2>
-                    <br /><br />
-                    <button
-                      className="del"
-                      onClick={(e) => deleteMessage(user.id, e)}
-                      type="submit"
-                    >
-                      delete
-                    </button>
+              <h2 className="del">{user.messagetext}</h2>
+              <br />
+              <br />
+              <button
+                className="del"
+                onClick={(e) => deleteMessage(user.id, e)}
+                type="submit"
+              >
+                delete
+              </button>
 
-                    <input
-                      value={messagetext}
-                      onChange={(e) => setMess(e.target.value)}
-                      type="text"
-                      id="messagetext"
-                      className="messtext"
-                      name="messagetext"
-                    />
-                    <button type="submit" onClick={(e) => editMessage(user.id, e)}>
-                      Edit message
-                    </button>
-          
-              
+              <input
+                value={messagetext}
+                onChange={(e) => setMess(e.target.value)}
+                type="text"
+                id="messagetext"
+                className="messtext"
+                name="messagetext"
+              />
+              <button type="submit" onClick={(e) => editMessage(user.id, e)}>
+                Edit message
+              </button>
             </div>
-
           ))
         ) : (
           <h2>please enter message</h2>

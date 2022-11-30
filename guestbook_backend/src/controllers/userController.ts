@@ -45,7 +45,7 @@ const create = async (req: Request, res: Response) => {
         res.json({People,token})
     } catch(err) {
         res.status(400)
-        res.json(`Could not add new Guest`)
+        res.json(`${err}`)
     }
 }
 
