@@ -23,7 +23,7 @@ const create = async (req: Request, res: Response) => {
         }
 
         const newMessage = await book.create(messageContainer)
-        console.log(newMessage)
+        // console.log(newMessage)
         res.json({newMessage , mess:`add create new message is ${messageContainer.messagetext}`})
     } catch (err) {
         res.status(400)

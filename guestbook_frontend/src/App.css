@@ -8,7 +8,10 @@
   background-image: linear-gradient(76deg, #b8b9b5, #272226 48%, #ada6a654);
 }
 
-.auth-form-container, .login-form, .register-form,.message-form {
+.auth-form-container,
+.login-form,
+.register-form,
+.message-form {
   display: flex;
   flex-direction: column;
 }
@@ -49,12 +52,11 @@ button {
   text-decoration: underline;
 }
 
-
-.del{
-  display:inline-block;
+.del {
+  display: inline-block;
   flex-direction: row;
 }
-button.del{
+button.del {
   background-color: rgb(154, 180, 204);
   margin: 1.5rem 0;
   padding: 1rem;

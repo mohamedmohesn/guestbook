@@ -123,7 +123,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 People = _a.sent();
                 token = jsonwebtoken_1["default"].sign({ user: People }, process.env.TOKEN);
-                console.log(People);
+                // console.log(People);
                 res.json({ People: People, token: token });
                 return [3 /*break*/, 3];
             case 2:

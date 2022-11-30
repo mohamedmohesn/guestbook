@@ -10,7 +10,7 @@ var verifyToken = function (req, res, next) {
         var authorizationHeader = req.headers.authorization;
         var token = authorizationHeader.split(' ')[1];
         var decoded = jsonwebtoken_1["default"].verify(token, process.env.TOKEN);
-        console.log(decoded);
+        // console.log(decoded)
         next();
     }
     catch (err) {

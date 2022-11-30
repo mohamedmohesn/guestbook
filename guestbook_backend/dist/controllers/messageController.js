@@ -69,10 +69,12 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                     guests_id: req.body.guests_id,
                     messagetext: req.body.messagetext
                 };
-                return [4 /*yield*/, book.create(messageContainer)];
+                return [4 /*yield*/, book.create(messageContainer)
+                    // console.log(newMessage)
+                ];
             case 1:
                 newMessage = _a.sent();
-                console.log(newMessage);
+                // console.log(newMessage)
                 res.json({ newMessage: newMessage, mess: "add create new message is ".concat(messageContainer.messagetext) });
                 return [3 /*break*/, 3];
             case 2:

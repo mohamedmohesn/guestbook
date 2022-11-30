@@ -41,7 +41,7 @@ const create = async (req: Request, res: Response) => {
         // process.env.TOKEN as string
         const People = await book.create(guest)
         const token = jwt.sign({user: People}, process.env.TOKEN as string)
-        console.log(People);
+        // console.log(People);
         res.json({People,token})
     } catch(err) {
         res.status(400)

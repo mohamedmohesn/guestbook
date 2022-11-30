@@ -6,7 +6,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         const authorizationHeader = req.headers.authorization as string
         const token = authorizationHeader.split(' ')[1]
         const decoded = jwt.verify(token, process.env.TOKEN as string)
-        console.log(decoded)
+        // console.log(decoded)
         next()
     } catch(err) {
         res.status(401)
